@@ -1,0 +1,138 @@
+<canvas id="."></canvas>
+<script>
+  var width,
+    height,
+    focal = 1,
+    speed = 0.1,
+    scale = 1000,
+    camera = [0, 0, -9],
+    canvas = document.getElementById("."),
+    faggot = document.body.addEventListener,
+    ctx = canvas.getContext("2d"),
+    render = () => {
+      ctx.fillStyle = "gray";
+      ctx.fillRect(0, 0, width, height);
+      ctx.fillStyle = "white";
+      drawFug();
+    },
+    drawFug = () => {
+      drawCube([0, -2, 0], 1);
+      drawCube([0, -1, 0], 1);
+      drawCube([0, 0, 0], 1);
+      drawCube([0, 1, 0], 1);
+      drawCube([0, 2, 0], 1);
+
+      drawCube([-2, 0, 0], 1);
+      drawCube([-1, 0, 0], 1);
+      drawCube([1, 0, 0], 1);
+      drawCube([2, 0, 0], 1);
+
+      drawCube([-2, 1, 0], 1);
+      drawCube([-2, 2, 0], 1);
+
+      drawCube([1, 2, 0], 1);
+      drawCube([2, 2, 0], 1);
+
+      drawCube([2, -1, 0], 1);
+      drawCube([2, -2, 0], 1);
+
+      drawCube([-1, -2, 0], 1);
+      drawCube([-2, -2, 0], 1);
+    };
+  (drawCube = (c, s) => {
+    s /= 2;
+    drawLine(
+      plot([c[0] + s, c[1] + s, c[2] + s]),
+      plot([c[0] + s, c[1] + s, c[2] - s])
+    );
+    drawLine(
+      plot([c[0] + s, c[1] - s, c[2] + s]),
+      plot([c[0] + s, c[1] - s, c[2] - s])
+    );
+    drawLine(
+      plot([c[0] - s, c[1] + s, c[2] + s]),
+      plot([c[0] - s, c[1] + s, c[2] - s])
+    );
+    drawLine(
+      plot([c[0] - s, c[1] - s, c[2] + s]),
+      plot([c[0] - s, c[1] - s, c[2] - s])
+    );
+
+    drawLine(
+      plot([c[0] - s, c[1] + s, c[2] + s]),
+      plot([c[0] + s, c[1] + s, c[2] + s])
+    );
+    drawLine(
+      plot([c[0] - s, c[1] + s, c[2] - s]),
+      plot([c[0] + s, c[1] + s, c[2] - s])
+    );
+
+    drawLine(
+      plot([c[0] - s, c[1] - s, c[2] + s]),
+      plot([c[0] + s, c[1] - s, c[2] + s])
+    );
+    drawLine(
+      plot([c[0] - s, c[1] - s, c[2] - s]),
+      plot([c[0] + s, c[1] - s, c[2] - s])
+    );
+
+    drawLine(
+      plot([c[0] - s, c[1] + s, c[2] - s]),
+      plot([c[0] - s, c[1] - s, c[2] - s])
+    );
+    drawLine(
+      plot([c[0] - s, c[1] + s, c[2] + s]),
+      plot([c[0] - s, c[1] - s, c[2] + s])
+    );
+
+    drawLine(
+      plot([c[0] + s, c[1] + s, c[2] - s]),
+      plot([c[0] + s, c[1] - s, c[2] - s])
+    );
+    drawLine(
+      plot([c[0] + s, c[1] + s, c[2] + s]),
+      plot([c[0] + s, c[1] - s, c[2] + s])
+    );
+  }),
+    (drawLine = (a, b) => {
+      ctx.beginPath();
+      ctx.moveTo(a[0], a[1]);
+      ctx.lineTo(b[0], b[1]);
+      ctx.stroke();
+    });
+
+  document.body.style.margin = 0;
+
+  var plot = (p) => {
+    const dx = p[0] - camera[0];
+    const dy = p[1] - camera[1];
+    const dz = p[2] - camera[2];
+    const x = (dx * focal) / dz;
+    const y = (dy * focal) / dz;
+
+    return [width / 2 + x * scale, height / 2 - y * scale];
+  };
+
+  faggot("keypress", (k) => {
+    if (k.key === "z") {
+      camera[2] += speed;
+    } else if (k.key === "q") {
+      camera[0] -= speed;
+    } else if (k.key === "s") {
+      camera[2] -= speed;
+    } else if (k.key === "d") {
+      camera[0] += speed;
+    }
+    render();
+  });
+
+  faggot("resize", (e) => {
+    width = e.target.innerWidth;
+    height = e.target.innerHeight;
+    ctx.canvas.width = width;
+    ctx.canvas.height = height;
+    render();
+  });
+
+  window.dispatchEvent(new Event("resize"));
+</script>
